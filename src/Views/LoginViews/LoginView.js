@@ -77,8 +77,7 @@ function LoginView() {
               onChange={handleChangePassword}
             />
           </label>
-          <Button className={s.formButton } as="input" type="submit" value="Войти" />{' '}
-           {/* <Button type="submit" variant="primary">Войти</Button> */}
+          <Button className={s.formButton } as="input" type="submit" value="Войти" />
         </form>
       </div>
     );

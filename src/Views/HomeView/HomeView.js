@@ -3,8 +3,9 @@ import { CSSTransition } from "react-transition-group";
 import s from './HomeView.module.css';
 import titleTransition from "../../Components/Transition/titleHome.module.css";
 
-const HomeView = () =>(
-  <div className={s.container}>
+const HomeView = () => {
+  return (
+    <div className={s.container}>
      <CSSTransition
           in
           timeout={500}
@@ -13,13 +14,16 @@ const HomeView = () =>(
           unmountOnExit
         >
         <h1 className={s.title}>
-      Приветственная страница нашего сервиса
+          Приветственная страница нашего сервиса
       <img src='https://img5.goodfon.ru/original/1366x768/7/fe/m-nnnn-bbbbb-vvvvvv-ccccc-xxxx.jpg'
         alt='welcome'
-      width='450'/>
-      </h1>
+            width='450' />
+           </h1>
       </CSSTransition>
-    </div>
-)
+    </div>)
+}
+  
+
+  
 
 export default HomeView;

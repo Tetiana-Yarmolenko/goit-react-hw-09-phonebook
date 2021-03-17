@@ -8,11 +8,11 @@ import { authOperations } from '../../Redux/Auth';
 
 
 function RegisterView() {
-    const dispatch = useDispatch();
-  
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+  
+   const dispatch = useDispatch();
 
     const handleChangeName = ({ target }) => {
     setName(target.value);

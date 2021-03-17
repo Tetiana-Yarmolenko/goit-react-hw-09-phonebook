@@ -1,5 +1,5 @@
-import { Component } from 'react'
-import { connect } from 'react-redux';
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import {CSSTransition} from 'react-transition-group'
 import contactOperations from '../../Redux/Phonebook/contacts-operations';
 
@@ -9,52 +9,50 @@ import alertTransition from '../Transition/alertTransition.module.css';
 import contactsSelectors from '../../Redux/Phonebook/contacts-selector';
 
 
-class ContactForm extends Component {
-    state = {
-    name: '',
-    phone: '',
-    massage: '',
-    showAlert: false,
-    }
+function ContactForm  () {
+    const [name, setName] = useState();
+    const [number, setNumber] = useState();
+    const [massage, setMessage] = useState('');
+    const [showAlert, setShowAlert] = useState(false);
 
-    toggleAlert = message => {
-    this.setState({ showAlert: true, massage: message });
-    setTimeout(() => this.setState({showAlert: false}), 1500);
+     const dispatch = useDispatch();
+     const contacts = useSelector(contactsSelectors.getAllContacts);
+
+  
+    const toggleAlert = message => {
+        setShowAlert(true);
+        setMessage(message);
+    setTimeout(() => setShowAlert(false), 1500);
   };
 
-    handleChangeForm = ({ target }) => {
-        const { name,  value } = target
-        this.setState({[name]: value})
+    const handleChangeName = ({ target }) => {
+        setName(target.value);
     } 
     
-    handleFormSubmit = (event) => {
-        event.preventDefault()
-        const { name, phone } = this.state;
-        const { contacts } = this.props;
-        
-        if (!name || !phone) {
-            this.setState({ showAlert: true, massage: 'Some field is empty' });
-            setTimeout(() => this.setState({ showAlert: false }), 1500);
-            return; }
-
-       if (contacts.find(({ name }) => name.toLowerCase() === this.state.name.toLowerCase(),
-       )) {
-           this.toggleAlert('Contact is already exist');
-           this.resetForm();
-      return;} 
+     const handleChangeNumber = ({ target }) => {
+        setNumber(target.value);
+    } 
     
-        this.props.onSubmit(name, phone);
-        this.resetForm();
+    const handleFormSubmit = (event) => {
+        event.preventDefault()
+       
+        if (!name || !number) {
+            toggleAlert('Some field is empty');
+            return; 
+        }
+
+        if (contacts.find(item => item.name.toLowerCase() === name.toLowerCase())) {
+            toggleAlert('Contact is already exist');
+            setName('');
+            setNumber('');
+            return;
+         }
+         
+        dispatch(contactOperations.addContact(name, number));
+        setName('');
+        setNumber('');
+        
     }
-
-    resetForm = () => this.setState({
-        name: '',
-        phone: ''
-    });
-
-
-    render() {
-        const {name, phone, massage, showAlert} = this.state
         return (<>
             <CSSTransition
           in={showAlert}
@@ -64,7 +62,7 @@ class ContactForm extends Component {
           <Alert massage={massage}/>
         </CSSTransition>
             <form className={s.form}
-            onSubmit={this.handleFormSubmit}>
+            onSubmit={handleFormSubmit}>
             <label className={s.label}>
                 Name
             <input
@@ -72,7 +70,7 @@ class ContactForm extends Component {
                     text='text' name='name'
                     placeholder="Enter name"
                     value={name}
-                    onChange={this.handleChangeForm} />
+                    onChange={handleChangeName} />
             </label>
             <label className={s.label}>
                 Phone
@@ -80,22 +78,13 @@ class ContactForm extends Component {
                     className={s.input}
                     text='tel' name='phone'
                     placeholder="Enter phone number"
-                    value={phone}
-                    onChange={this.handleChangeForm} />
+                    value={number}
+                    onChange={handleChangeNumber} />
                 </label>
             <button className={s.button} type="submit">Add contact</button>
             </form>
         </>)
         
     }
-}
 
-const mapStateToProps = state => ({
-  contacts: state.contacts.items,
-});
-
-const mapDispatchToProps = dispatch => ({
-    onSubmit: (newName, phone) => dispatch(contactOperations.addContact(newName,  phone)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);
+export default ContactForm;

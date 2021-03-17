@@ -10,6 +10,8 @@ import contactsOperations from '../../Redux/Phonebook/contacts-operations';
 function ContactList() {
   const dispatch = useDispatch();
   const contacts = useSelector(contactsSelectors.getVisibleContacts);
+
+  const onRemove = (id) => dispatch(contactsOperations.deleteContact(id))
   
   return (
     < TransitionGroup component="ul" className={s.list}>
@@ -21,7 +23,7 @@ function ContactList() {
           <button
             className={s.button}
             type="button"
-            onClick={() => dispatch(contactsOperations.deleteContact(id))}>
+            onClick={() => onRemove(id)}>
             Delete
           </button>
         </li>

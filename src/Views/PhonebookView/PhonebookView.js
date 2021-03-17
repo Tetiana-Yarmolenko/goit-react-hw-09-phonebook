@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
 import { CSSTransition } from "react-transition-group";
 import s from "./PhonebookView.module.css";
 
@@ -14,6 +14,7 @@ import contactsSelectors from "../../Redux/Phonebook/contacts-selector";
 
 function PhonebookView () {
   const dispatch = useDispatch();
+  const isLoading = useSelector(contactsSelectors. getLoading)
 
    useEffect(() => {
     dispatch(contactOperations.getContacts());
@@ -34,9 +35,7 @@ function PhonebookView () {
         <h2 className={s.contacts}>Contacts</h2>
       
         <Filter />
-        {/* {this.props.isLoading && (
-          <Loader/>
-        )} */}
+        {isLoading && (<Loader/>)}
         <ContactList />
       </div>
     );

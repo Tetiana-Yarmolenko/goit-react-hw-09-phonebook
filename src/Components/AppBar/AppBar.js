@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import s from "./AppBar.module.css";
 
 import Navigation from '../Navigation/Navigation';
@@ -7,9 +7,8 @@ import AuthNav from '../AuhtNav/AuthNav';
 import UserMenu from '../UserMenu/UserMenu';
 import { authSelectors }  from '../../Redux/Auth';
 
-
-
-const AppBar = ({ isAuthenticated }) => {
+const AppBar = () => {
+  const isAuthenticated = useSelector(authSelectors.getIsAuthenticated);
      return (
     <header className={s.header}>
          <Navigation />
@@ -18,8 +17,4 @@ const AppBar = ({ isAuthenticated }) => {
   );
 }
 
-const mapStateToProps = (state) => ({
-  isAuthenticated: authSelectors.getIsAuthenticated(state)
-})
-
-export default connect(mapStateToProps)(AppBar);
+export default AppBar;

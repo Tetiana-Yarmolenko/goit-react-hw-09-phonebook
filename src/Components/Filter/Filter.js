@@ -1,14 +1,18 @@
-import { connect } from 'react-redux';
+import { useSelector, useDispatch} from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
 import s from "./Filter.module.css";
 
 import * as contactActions from '../../Redux/Phonebook/contacts-actions';
 import contactsSelectors from '../../Redux/Phonebook/contacts-selector';
 import  fadeTransition from '../Transition/fadeTransition.module.css'
-const Filter = ({ value, onChange, items }) => {
+
+const Filter = () => {
+    const dispatch = useDispatch();
+    const value = useSelector(contactsSelectors.getFilter);
+   
     return (
     //     <CSSTransition
-    //         in={items.length > 0}
+    //     in={items.length > 0}
     //     timeout={250}
     //     classNames={fadeTransition}
     //     unmountOnExit
@@ -19,21 +23,11 @@ const Filter = ({ value, onChange, items }) => {
         className={s.input}
         type='text'
         value={value}
-        onChange={onChange}
+        onChange={(e)=> dispatch(contactActions.changeFilter(e.target.value))}
         placeholder='Enter name for Search'/>
             </label>
         // </CSSTransition >
         )
 }
 
-
-const mapStateToProps = (state) => ({
-    value: contactsSelectors.getFilter(state),
-    items: contactsSelectors.getVisibleContacts(state),
-})
-
-const mapDispatchToProps = dispatch => ({
- onChange: e => dispatch(contactActions.changeFilter(e.target.value)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps )(Filter)
+export default Filter
