@@ -32,22 +32,23 @@ function App() {
               exact path="/">
             <HomeView />
               </PublicRoute>
-            <RegisterView
-             path="/register"
-           restricted
-              redirectTo="/contacts">
-              </RegisterView>
           <PublicRoute
             path="/login"
             restricted
             redirectTo="/contacts">
             <LoginView/>
             </PublicRoute>
+             <PublicRoute
+             path="/register"
+              restricted
+              redirectTo="/contacts">
+              <RegisterView/>
+             </PublicRoute>
               <PrivateRoute
-                path="/contacts"
-                redirectTo="/login">
+              path="/contacts"
+              redirectTo="/login">
               <PhonebookView />
-               </PrivateRoute>
+            </PrivateRoute>
         </Switch>
       </Suspense>
       </Container>

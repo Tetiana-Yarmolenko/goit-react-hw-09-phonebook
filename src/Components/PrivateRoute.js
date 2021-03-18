@@ -18,6 +18,6 @@ function PrivateRoute({
     <Route {...routeProps}> {
       isAuthenticated ? children : <Redirect to={redirectTo} />
     } </Route>
-     )
+  );
    }
 export default PrivateRoute;

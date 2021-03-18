@@ -6,9 +6,29 @@ import s from './Navigation.module.css';
 import { authSelectors } from '../../Redux/Auth';
 
 
-const Navigation = () => {
-    const isAuthenticated = useSelector(authSelectors.getIsAuthenticated);
+// const Navigation = () => {
+//     const isAuthenticated = useSelector();
    
+//     return (
+//         <nav>
+//             <NavLink  to="/"  exact
+//                 className={s.link}
+//                 activeClassName={s.activeLink}>
+//                 Home
+//         </NavLink>
+//             {isAuthenticated && (
+//                  <NavLink  to="/contacts" exact
+//                 className={s.link}
+//                 activeClassName={s.activeLink}>
+//                 Phonebook
+//         </NavLink>
+//            )}
+//         </nav>
+//     )
+// }
+
+// export default React.memo(Navigation);
+const Navigation = ({isAuthenticated}) => {
     return (
         <nav>
             <NavLink  to="/"  exact
@@ -26,5 +46,9 @@ const Navigation = () => {
         </nav>
     )
 }
+const mapStateToProps = (state) => ({
+    isAuthenticated: authSelectors.getIsAuthenticated(state)
+    
+})
 
-export default Navigation;
+export default connect(mapStateToProps)(Navigation);
